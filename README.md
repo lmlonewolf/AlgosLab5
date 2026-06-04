@@ -69,13 +69,13 @@ public:
     void print() const;
     void insert(int val);
 
-    // Обязательная часть
+// Обязательная часть
     std::vector<int> preorder() const;
     std::vector<int> inorder() const;
     std::vector<int> postorder() const;
     std::vector<std::vector<int>> level_order() const;
 
-    // Вариативная часть
+// Вариативная часть
     std::vector<int> get_count_nodes_on_levels() const;
     int get_min() const;
     int get_max() const;
