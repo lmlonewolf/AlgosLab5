@@ -1,20 +1,8 @@
 #include "Header.h"
 
-
-
-int main() {
-    BinaryTree tree;
-
-    tree.insert(70);
-    tree.insert(50);
-    tree.insert(30);
-    tree.insert(60);
-    tree.insert(40);
-    tree.insert(20);
-    tree.insert(80);
-    tree.insert(150);
-
-    std::cout << "Tree" << std::endl;
+void test_tree(BinaryTree& tree) {
+    static int counter = 1;
+    std::cout << std::endl << std::endl << "Tree "  << counter++ << std::endl;
     tree.print();
 
 
@@ -64,7 +52,44 @@ int main() {
     std::cout << std::endl << "Sum on levels: ";
     print_vector(tree.sum_on_levels());
     std::cout << std::endl;
+}
 
+int main() {
+    BinaryTree tree1;
+    tree1.insert(70);
+    tree1.insert(50);
+    tree1.insert(30);
+    tree1.insert(60);
+    tree1.insert(40);
+    tree1.insert(20);
+    tree1.insert(80);
+    tree1.insert(150);
+    test_tree(tree1);
+
+    BinaryTree tree2;
+    tree2.insert(70);
+    tree2.insert(50);
+    tree2.insert(50);
+    tree2.insert(70);
+    tree2.insert(40);
+    tree2.insert(20);
+    test_tree(tree2);
+
+    BinaryTree tree3;
+    tree3.insert(25);
+    tree3.insert(25);
+    tree3.insert(25);
+    tree3.insert(25);
+    tree3.insert(25);
+    tree3.insert(25);
+    test_tree(tree3);
+
+    BinaryTree tree4;
+    tree4.insert(25);
+    test_tree(tree4);
+
+    BinaryTree tree5;
+    test_tree(tree5);
 
     return 0;
 }
