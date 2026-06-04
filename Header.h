@@ -15,7 +15,7 @@ struct Node {
     int height = 1;
 
     Node(int val);
-    void update_metrics();
+    void update_node();
 };
 
 
@@ -24,7 +24,7 @@ class BinaryTree {
     Node* root = nullptr;
 
     void clear(Node* node);
-    Node* insert(Node* root, int val);
+    void update_metrics(Node* node);
 	void print(Node* node, int space) const;
 
     void preorder(Node* node, std::vector<int>& vec) const;

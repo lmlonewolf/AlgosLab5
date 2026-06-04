@@ -23,7 +23,7 @@ Node::Node(int val) {
     sub_tree_sum = val;
 }
 
-void Node::update_metrics() {
+void Node::update_node() {
     sub_tree_min = value;
     sub_tree_max = value;
     sub_tree_sum = value;
@@ -60,22 +60,44 @@ void BinaryTree::clear(Node* node) {
 }
 
 
-Node* BinaryTree::insert(Node* node, int val) {
-	if (!node)
-        return new Node(val);
+void BinaryTree::update_metrics(Node* node) {
+    if (!node)
+        return;
 
-	if (val < node->value)
-		node->left = insert(node->left, val);
-	else if (val > node->value)
-		node->right = insert(node->right, val);
+    update_metrics(node->left);
+    update_metrics(node->right);
 
-    node->update_metrics();
-	return node;
+    node->update_node();
 }
 void BinaryTree::insert(int val) {
-    root = insert(root, val);
-}
+    if (!root) {
+        root = new Node(val);
+        return;
+    }
 
+    std::queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* curr = q.front();
+        q.pop();
+
+        if (!curr->left) {
+            curr->left = new Node(val);
+            break;
+        }
+        else
+            q.push(curr->left);
+
+        if (!curr->right) {
+            curr->right = new Node(val);
+            break;
+        }
+        else
+            q.push(curr->right);
+    }
+    update_metrics(root);
+}
 
 void BinaryTree::print(Node* node, int space) const {
 	if (!node)
@@ -147,7 +169,6 @@ std::vector<std::vector<int>> BinaryTree::level_order() const {
     std::vector<std::vector<int>> vec;
     level_order(root, vec, 0);
     return vec;
-
 }
 
 
