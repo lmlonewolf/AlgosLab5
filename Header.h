@@ -13,6 +13,7 @@ struct Node {
     int sub_tree_max;
     int sub_tree_sum;
     int height = 1;
+    int level = 0;
 
     Node(int val);
     void update_node();
@@ -30,7 +31,6 @@ class BinaryTree {
     void preorder(Node* node, std::vector<int>& vec) const;
     void inorder(Node* node, std::vector<int>& vec) const;
     void postorder(Node* node, std::vector<int>& vec) const;
-    void level_order(Node* node, std::vector<std::vector<int>>& vec, int level) const;
 
     void get_count_leaves(Node* node, int& count) const;
     void get_sum_ways(Node* node, int current_sum, int& res) const;

@@ -84,6 +84,7 @@ void BinaryTree::insert(int val) {
 
         if (!curr->left) {
             curr->left = new Node(val);
+            curr->left->level = curr->level + 1;
             break;
         }
         else
@@ -91,6 +92,7 @@ void BinaryTree::insert(int val) {
 
         if (!curr->right) {
             curr->right = new Node(val);
+            curr->right->level = curr->level + 1;
             break;
         }
         else
@@ -155,19 +157,28 @@ std::vector<int> BinaryTree::postorder() const {
     return vec;
 }
 
-void BinaryTree::level_order(Node* node, std::vector<std::vector<int>>& vec, int level) const {
-    if (!node)
-        return;
-    if (level == vec.size())
-        vec.push_back(std::vector<int>());
-
-    vec[level].push_back(node->value);
-    level_order(node->left, vec, level + 1);
-    level_order(node->right, vec, level + 1);
-}
 std::vector<std::vector<int>> BinaryTree::level_order() const {
     std::vector<std::vector<int>> vec;
-    level_order(root, vec, 0);
+    if (!root)
+        return vec;
+
+    vec.resize(root->height);
+
+    std::queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* curr = q.front();
+        q.pop();
+
+        vec[curr->level].push_back(curr->value);
+
+        if (curr->left)
+            q.push(curr->left);
+        if (curr->right)
+            q.push(curr->right);
+    }
+
     return vec;
 }
 

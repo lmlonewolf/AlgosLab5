@@ -34,6 +34,7 @@ struct Node {
     int sub_tree_max;
     int sub_tree_sum;
     int height = 1;
+    int level = 0;
 
     Node(int val);
     void update_node();
@@ -44,7 +45,6 @@ struct Node {
 **Структура**
 ```cpp
 class BinaryTree {
-private:
     Node* root = nullptr;
 
 // Внутрение методы
@@ -55,7 +55,6 @@ private:
     void preorder(Node* node, std::vector<int>& vec) const;
     void inorder(Node* node, std::vector<int>& vec) const;
     void postorder(Node* node, std::vector<int>& vec) const;
-    void level_order(Node* node, std::vector<std::vector<int>>& vec, int level) const;
 
     void get_count_leaves(Node* node, int& count) const;
     void get_sum_ways(Node* node, int current_sum, int& res) const;
@@ -163,6 +162,7 @@ void BinaryTree::insert(int val) {
 
         if (!curr->left) {
             curr->left = new Node(val);
+            curr->left->level = curr->level + 1;
             break;
         }
         else
@@ -170,6 +170,7 @@ void BinaryTree::insert(int val) {
 
         if (!curr->right) {
             curr->right = new Node(val);
+            curr->right->level = curr->level + 1;
             break;
         }
         else
@@ -180,7 +181,8 @@ void BinaryTree::insert(int val) {
 
 // Прямой обход в глубину (`preorder`), возвращающий список значений
 void BinaryTree::preorder(Node* node, std::vector<int>& vec) const {
-    if (!node) return;
+    if (!node)
+        return;
     vec.push_back(node->value);
     preorder(node->left, vec);
     preorder(node->right, vec);
@@ -193,7 +195,8 @@ std::vector<int> BinaryTree::preorder() const {
 
 // Симметричный обход в глубину (`inorder`), возвращающий список значений
 void BinaryTree::inorder(Node* node, std::vector<int>& vec) const {
-    if (!node) return;
+    if (!node)
+        return;
     inorder(node->left, vec);
     vec.push_back(node->value);
     inorder(node->right, vec);
@@ -206,7 +209,8 @@ std::vector<int> BinaryTree::inorder() const {
 
 // Обратный обход в глубину (`postorder`), возвращающий список значений
 void BinaryTree::postorder(Node* node, std::vector<int>& vec) const {
-    if (!node) return;
+    if (!node)
+        return;
     postorder(node->left, vec);
     postorder(node->right, vec);
     vec.push_back(node->value);
@@ -218,18 +222,28 @@ std::vector<int> BinaryTree::postorder() const {
 }
 
 // Обход в ширину по уровням (`level_order`), возвращающий матрицу значений
-void BinaryTree::level_order(Node* node, std::vector<std::vector<int>>& vec, int level) const {
-    if (!node) return;
-    if (level == vec.size())
-        vec.push_back(std::vector<int>());
-
-    vec[level].push_back(node->value);
-    level_order(node->left, vec, level + 1);
-    level_order(node->right, vec, level + 1);
-}
 std::vector<std::vector<int>> BinaryTree::level_order() const {
     std::vector<std::vector<int>> vec;
-    level_order(root, vec, 0);
+    if (!root)
+        return vec;
+
+    vec.resize(root->height);
+
+    std::queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* curr = q.front();
+        q.pop();
+
+        vec[curr->level].push_back(curr->value);
+
+        if (curr->left)
+            q.push(curr->left);
+        if (curr->right)
+            q.push(curr->right);
+    }
+
     return vec;
 }
 ```
